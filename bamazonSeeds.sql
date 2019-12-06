@@ -19,8 +19,10 @@ VALUES
     ("Ben Ng's Knowledge", "Impossibilities", 5000.00, 10),
     ("Your Father's Approval", "Impossibilities", 15.95, 30),
     ("Super Mario Batali", "Video Games", 39.95, 50),
-    ("Jesus Christ Vampire Hunter", "DVDs", 19.99, 20),
     ("Miniature Equine Accoutrements", "Fashion", 29.99, 100),
     ("Happiness That Isn't Fleeting", "Impossibilities", 50.00, 250),
-    ("")
-
+    ("Factory Defect Prosthetic Leg", "Fashion", 250.00, 25),
+    ("The Lebron James Bible", "Books", 19.99, 200),
+    ("Helen Hunt", "Oddities", 799.95, 1),
+    ("Bob's Aspergers", "Books", 24.95, 20),
+    ("Kingdom Farts", "Video Games", 19.99, 50);
