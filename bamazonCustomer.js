@@ -17,6 +17,15 @@ connection.connect(function(error){
     runMenu();
 })
 
+var productArray = [];
+
 function runMenu() {
-    
+    connection.query("SELECT * FROM products", function(error, results){
+        if (error) throw error;
+        for (var i = 0; i < results.length; i++){
+            productArray.push(results[i]);
+        }
+        return productArray;
+    })
+
 }
