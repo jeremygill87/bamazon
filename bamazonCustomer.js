@@ -19,8 +19,9 @@ connection.connect(function(error){
 })
 
 var productArray = [];
-var totalCost = 0;
+
 function runInventory() {
+    var totalCost = 0;
     var query = "SELECT * FROM products";
     connection.query(query, function(error, results){
         if (error) throw error;
@@ -59,13 +60,17 @@ function selectionPrompt(){
             message: "How many would you like to purchase?"
         }
     ])
-    .then(function(answer){
+    .then(function(answer){           
+        
         var selection = productArray[answer.purchase-1];
         if (answer.quantity <=selection.stock_quantity){
-            selection.stock_quantity -= answer.quantity;
             console.log("Purchase successful!");
             totalCost += selection.stock_quantity * selection.price;
             console.log("Total Cost: $" + totalCost);
+            var updateStock = "UPDATE products SET stock_quantity = " + (selection.stock_quantity - answer.quantity) + " WHERE item_id = " + selection.item_id;
+            connection.query(updateStock, function(err, res) {
+                if (err) throw err;
+            })
             continuePrompt();
         }
         else if (answer.quantity > selection.stock_quantity){
