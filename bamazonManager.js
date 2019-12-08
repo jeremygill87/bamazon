@@ -30,18 +30,17 @@ function managerMenu() {
         }
     ])
     .then(function(answer){
-        switch (answer.task){
-            case "View Products for Sale":
-                viewProducts();
-
-            case "View Low Inventory":
-                viewLowInventory();
-
-            case "Add to Inventory":
-                addInventory();
-
-            case "Add New Product":
-                createNewProduct();
+        if (answer.task === "View Products for Sale"){
+            viewProducts();
+        }
+        else if (answer.task === "View Low Inventory"){
+            viewLowInventory();
+        }
+        else if (answer.task === "Add to Inventor"){
+            addInventory();
+        }
+        else if (answer.task === "Add New Product"){
+            createNewProduct();
         }
     })
 }
@@ -62,7 +61,8 @@ function viewProducts() {
         t.cell("In Stock", product.stock_quantity)
         t.newRow()
     })
-    // console.log(t.toString());
+    console.log(t.toString());
+    managerMenu();
     });
 }
 
@@ -84,16 +84,34 @@ function viewLowInventory() {
             t.newRow()
         })
         console.log(t.toString());
+        managerMenu();
     })
 }
 
 function addInventory() {
-    viewProducts();
-    inquirer
-    .prompt ([
+    connection.query("SELECT * FROM products", function (err, results){
+        if (err) throw err;
+         inquirer
+        .prompt ([
         {
             name: "product",
-            type: "input",
+            type: "rawlist",
+            choices: function() {
+                var choiceArray = [];
+                for (var i = 0; i < results.length; i++){
+                    choiceArray.push(results[i]);
+                }
+                var t = new table;
+                choiceArray.forEach(function(product){
+                    t.cell("Product ID", product.item_id)
+                    t.cell("Product Name", product.product_name)
+                    t.cell("Department Name", product.department_name)
+                    t.cell("Price", product.price)
+                    t.cell("In Stock", product.stock_quantity)
+                    t.newRow()
+                })
+                console.log(t.toString);
+            },
             message: "Which product would you like to restock?"
         },
         {
@@ -109,6 +127,8 @@ function addInventory() {
             if (err) throw err;
         })
         addInventory();
+    })
+   
     })
     
 }
@@ -140,5 +160,15 @@ function createNewProduct() {
     .then(function(answer) {
         productArray.push(answer);
         console.log(productArray);
+        var update = "INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES ('" +
+                                answer.newProductName + "','" + answer.newProductDepartmentName + "','" + 
+                                answer.newProductPrice + "','" + answer.newProductQuantity + "')";
+        connection.query(update, function(err, results){
+            if (err) throw err;
+            console.log("Product added!");
+            managerMenu();
+        })
+        
     })
+    
 }
