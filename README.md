@@ -33,7 +33,13 @@ Nothing yet.  Kill the rich.  Down with Bezos!  BRING ME HIS HEAD!!
 
 With Bezos gone, the e-commerce void is mine to fill.  Soon, I will bend the Internet to my will, by offering free expedited shipping for people with a paid Bamazon account.
 
-## Screenshots, for your pleasure
+## Videos, for your Viewing Pleasure
+
+https://www.youtube.com/watch?v=KuCyatluYr8 
+
+https://www.youtube.com/watch?v=e_Wiud-0hCM
+
+https://www.youtube.com/watch?v=BwMV8jJMD9g 
 
 
 
