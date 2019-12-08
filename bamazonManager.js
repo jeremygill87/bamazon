@@ -17,8 +17,8 @@ connection.connect(function(error){
     if (error) throw error;
     managerMenu();
 })
-var productArray = [];
 
+var productArray = [];
 function managerMenu() {
     inquirer
     .prompt ([
@@ -36,7 +36,7 @@ function managerMenu() {
         else if (answer.task === "View Low Inventory"){
             viewLowInventory();
         }
-        else if (answer.task === "Add to Inventor"){
+        else if (answer.task === "Add to Inventory"){
             addInventory();
         }
         else if (answer.task === "Add New Product"){
@@ -46,6 +46,7 @@ function managerMenu() {
 }
 
 function viewProducts() {
+    var productArray = [];
     var query = "SELECT * FROM products";
     connection.query(query, function(error, results){
         if (error) throw error;
@@ -62,8 +63,10 @@ function viewProducts() {
         t.newRow()
     })
     console.log(t.toString());
+    console.log("**************************************************************************")
     managerMenu();
     });
+    return productArray;
 }
 
 function viewLowInventory() {
@@ -89,34 +92,33 @@ function viewLowInventory() {
 }
 
 function addInventory() {
-    connection.query("SELECT * FROM products", function (err, results){
-        if (err) throw err;
+    var query = "SELECT * FROM products";
+    connection.query(query, function(error, results){
+        if (error) throw error;
+        for (var i = 0; i < results.length; i++){
+            productArray.push(results[i]);
+        }
+        var t = new table;
+        productArray.forEach(function(product){
+        t.cell("Product ID", product.item_id)
+        t.cell("Product Name", product.product_name)
+        t.cell("Department Name", product.department_name)
+        t.cell("Price", product.price)
+        t.cell("In Stock", product.stock_quantity)
+        t.newRow()
+    })
+    console.log(t.toString());
+
          inquirer
         .prompt ([
         {
             name: "product",
-            type: "rawlist",
-            choices: function() {
-                var choiceArray = [];
-                for (var i = 0; i < results.length; i++){
-                    choiceArray.push(results[i]);
-                }
-                var t = new table;
-                choiceArray.forEach(function(product){
-                    t.cell("Product ID", product.item_id)
-                    t.cell("Product Name", product.product_name)
-                    t.cell("Department Name", product.department_name)
-                    t.cell("Price", product.price)
-                    t.cell("In Stock", product.stock_quantity)
-                    t.newRow()
-                })
-                console.log(t.toString);
-            },
+            type: "input",
             message: "Which product would you like to restock?"
         },
         {
             name: "quantity",
-            type: "input",
+            type: "number",
             message: "How much product would you like to restock?"
         }
     ])
@@ -126,9 +128,8 @@ function addInventory() {
         connection.query(updateStock, function(err, res){
             if (err) throw err;
         })
-        addInventory();
-    })
-   
+        managerMenu();
+    });
     })
     
 }
